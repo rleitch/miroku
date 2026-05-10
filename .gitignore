@@ -427,3 +427,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+*.local.json
+/src/Miroku.Data/MirokuDesignTimeDbContextFactory.cs
+/src/Miroku.Web/appsettings.Development.json

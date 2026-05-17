@@ -1,0 +1,166 @@
+﻿@page "/{UserId:guid?}"
+@using Miroku.Ollama
+@using Markdig
+@inject UserService UserService
+@inject ConversationService ConversationService
+@inject MessageService MessageService
+@inject NavigationManager NavManager
+@inject OllamaClient OllamaClient
+@inject CookieService CookieService
+@implements IDisposable
+
+
+<!-- MESSAGE DISPLAY AREA -->
+<div class="chat-history">
+    @if (User?.ActiveConversation is not null)
+    {
+        foreach (var message in User.ActiveConversation.Messages.OrderBy(m => m.DateCreated))
+        {
+            switch (message.Role)
+            {
+                case Core.MessageRole.Assistant:
+                    <!-- AI Message -->
+                    <div class="message ai-message">
+                        @if (string.IsNullOrWhiteSpace(message.Content))
+                        {
+                            <p>Thinking...</p>
+                        }
+                        else
+                        {
+                            @((MarkupString)ConvertMarkdownToHtml(message.Content))
+                        }
+                    </div>
+                    break;
+                case Core.MessageRole.User:
+                    <!-- User Message -->
+                    <div class="message user-message">
+                        @message.Content
+                    </div>
+                    break;
+            }
+        }
+    }
+</div>
+
+<!-- INPUT AREA -->
+<div class="input-area">
+    <textarea @bind="userRequest"
+              @bind:event="oninput"
+              @onkeydown="HandleKeyPress"
+              placeholder="何を映しますか"
+              aria-label="Chat input"
+              rows="4"></textarea>
+    <button @onclick="SendMessageAsync">発する</button>
+</div>
+
+@code {
+
+    private static readonly string _userIdKey = "userId";
+
+    [Parameter]
+    public Guid? UserId { get; set; }
+
+    public UserViewModel? User { get; set; }
+
+    private string userRequest = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserId is null)
+        {
+            var cookieValue = CookieService.GetCookie(_userIdKey);
+            if (Guid.TryParse(cookieValue, out var userId))
+            {
+                UserId = userId;
+            }
+        }
+
+        UserService.UserLoaded += OnUserLoaded;
+        ConversationService.MessageSaved += OnConversationStateUpdated;
+        ConversationService.ConversationLoaded += OnLoadedConversation;
+        ConversationService.ConversationDeleted += ConversationDeleted;
+
+        await UserService.LoadUserAsync(UserId);
+    }
+
+    private async Task SendMessageAsync()
+    {
+        if (string.IsNullOrWhiteSpace(userRequest))
+        {
+            return;
+        }
+        
+        var newMessageView = new MessageViewModel(userRequest);
+        userRequest = string.Empty;
+        User?.ActiveConversation?.Messages?.Add(newMessageView);
+        await ConversationService.SaveAsync(User.Id, User.ActiveConversation.Id, newMessageView);
+        var currentResponse = new MessageViewModel(string.Empty) { Role = Core.MessageRole.Assistant };
+        User?.ActiveConversation?.Messages?.Add(currentResponse);
+        await foreach (var chunk in ConversationService.StreamResponse(User?.ActiveConversation))
+        {
+            currentResponse.Content += chunk;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        await ConversationService.SaveAsync(User.Id, User.ActiveConversation.Id, currentResponse);
+    }
+
+    private void OnUserLoaded(UserViewModel user)
+    {
+        var cookieValue = CookieService.GetCookie(_userIdKey);
+        if (!Guid.TryParse(cookieValue, out var userId))
+        {
+            CookieService.SetCookie(_userIdKey, user.Id.ToString());
+        }
+
+        User = user;
+        UserId = user.Id;
+        StateHasChanged();
+    }
+
+    private async Task OnConversationStateUpdated(MessageViewModel conversationViewModel)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        UserService.UserLoaded -= OnUserLoaded;
+        ConversationService.MessageSaved -= OnConversationStateUpdated;
+        ConversationService.ConversationLoaded -= OnLoadedConversation;
+        ConversationService.ConversationDeleted -= ConversationDeleted;
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey && !e.CtrlKey && !e.AltKey && !e.MetaKey)
+        {
+            await SendMessageAsync();
+        }
+    }
+
+    private static string ConvertMarkdownToHtml(string markdownContent)
+    {
+        var pipelineBuilder = new MarkdownPipelineBuilder();
+        pipelineBuilder.UseAdvancedExtensions();
+        var pipeline = pipelineBuilder.Build();
+        string html = Markdown.ToHtml(markdownContent, pipeline);
+        return html;
+    }
+
+    private void OnLoadedConversation(ConversationViewModel conversationView)
+    {
+        User?.ActiveConversation = conversationView;
+        StateHasChanged();
+    }
+
+    private void ConversationDeleted(Guid conversationId)
+    {
+        User?.Conversations?.Remove(conversationId);
+        if (User?.ActiveConversation?.Id != null && User.ActiveConversation.Id == conversationId)
+        {
+            User.ActiveConversation = new ConversationViewModel();
+        }
+        StateHasChanged();
+    }
+}

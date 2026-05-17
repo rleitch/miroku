@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Miroku.Core/Miroku.Core.csproj" Id="6fe11712-e185-4fb1-b8e3-8f5e08666ab7" />
+    <Project Path="src/Miroku.Data/Miroku.Data.csproj" Id="ce4cb59e-2b49-472d-936c-3821ed95c3f4" />
+    <Project Path="src/Miroku.Ollama/Miroku.Ollama.csproj" Id="5b84830c-98a7-4fd3-86fe-f51bb8029e73" />
+    <Project Path="src/Miroku.Web/Miroku.Web.csproj" Id="f786a261-5b86-454e-b40c-a654c87f9a80" />
+  </Folder>
+</Solution>

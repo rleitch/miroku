@@ -1,0 +1,81 @@
+﻿@inject UserService UserService
+@inject ConversationService ConversationService
+@implements IDisposable
+
+<h2>ミロク</h2>
+<h2>記憶</h2>
+
+<!-- NEW NEW CHAT BUTTON HERE -->
+<button class="new-chat-button" @onclick="() => LoadConversationAsync(Guid.Empty)">
+    + 問いかけ
+</button>
+
+@if (User == null)
+{
+    <span>Loading...</span>
+}
+else
+{
+    <ul class="chat-history-list">
+        @foreach (var conversation in User.Conversations)
+        {
+            <li @onclick="() => LoadConversationAsync(conversation.Key)" class="chat-item">
+                <span class="conversation-title">@conversation.Value.Name</span>
+                <button class="delete-icon" @onclick="() => DeleteConversationAsync(conversation.Key)">
+                    &times;
+                </button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+
+    public UserViewModel? User { get; set; }
+
+    protected override void OnInitialized()
+    {
+        UserService.UserLoaded += OnUserStateChanged;
+        ConversationService.ConversationDeleted += ConversationDeleted;
+        ConversationService.ConversationCreated += ConversationCreated;
+    }
+
+    private void OnUserStateChanged(UserViewModel user)
+    {
+        User = user;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        UserService.UserLoaded -= OnUserStateChanged;
+        ConversationService.ConversationDeleted -= ConversationDeleted;
+        ConversationService.ConversationCreated -= ConversationCreated;
+    }
+
+    private async Task LoadConversationAsync(Guid conversationId)
+    {
+        await ConversationService.LoadConversationAsync(User.Id, conversationId);
+    }
+
+    private async Task DeleteConversationAsync(Guid conversationId)
+    {
+        await ConversationService.DeleteConversation(User.Id, conversationId);
+    }
+
+    private void ConversationDeleted(Guid conversationId)
+    {
+        User?.Conversations?.Remove(conversationId);
+        if(User?.ActiveConversation?.Id != null && User.ActiveConversation.Id == conversationId)
+        {
+            User.ActiveConversation = new ConversationViewModel();
+        }
+        StateHasChanged();
+    }
+
+    private void ConversationCreated(ConversationViewModel conversationView)
+    {
+        User?.Conversations?.Add(conversationView.Id, conversationView);
+        StateHasChanged();
+    }
+}

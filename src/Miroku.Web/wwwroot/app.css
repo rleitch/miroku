@@ -1,60 +1,282 @@
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+/*=====================================================
+* VAMPIRESQUE DARK OVERHAUL
+*=====================================================*/
+
+body {
+    margin: 0;
+    padding: 0;
+    /* Fancy, classic fonts work better with this vibe */
+    font-family: "Georgia", Times, serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Deep, rich black background */
+    background-color: #0a0a0a;
+    height: 100vh;
+    overflow: hidden;
+    /* Aged parchment/silver text color */
+    color: #c0c0c0;
+    padding-bottom: 0;
 }
 
-a, .btn-link {
-    color: #006bb7;
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+.sidebar {
+    width: 250px;
+    /* Midnight black, giving depth */
+    background-color: #121212;
+    color: #e0e0e0;
+    padding: 20px 0;
+    /* Subtle metallic shadow */
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
+    border-right: 1px solid #222; /* Separator line */
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-h1:focus {
-    outline: none;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid #e50000;
-}
-
-.validation-message {
-    color: #e50000;
-}
-
-.blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
-    color: white;
-}
-
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
+    .sidebar h2 {
+        padding: 0 20px 10px;
+        margin-top: 0;
+        /* Regal, deep burgundy separator */
+        border-bottom: 1px solid #4d0000;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: #a00000; /* A deep blood red */
     }
 
-.darker-border-checkbox.form-check-input {
-    border-color: #929292;
+.new-chat-button {
+    /* Regal, deep crimson background */
+    background-color: #4d0000;
+    color: #e0e0e0;
+    padding: 12px 15px;
+    margin: 15px 20px 25px;
+    /* Subtle metallic border */
+    border: 1px solid #8b0000;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    /* Transition for a smoother, dramatic hover */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    width: calc(100% - 40px);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-    color: var(--bs-secondary-color);
-    text-align: end;
+    .new-chat-button:hover {
+        /* Brighter, more active hover state */
+        background-color: #8b0000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(139, 0, 0, 0.6);
+    }
+
+.chat-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-    text-align: start;
+.chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    /* Subtle aged border */
+    border-bottom: 1px solid #1f1f1f;
+    color: #c0c0c0;
+}
+
+    .chat-item:hover {
+        /* Dark, velvet hover effect */
+        background-color: #1a1a1a;
+        box-shadow: 0 0 8px rgba(139, 0, 0, 0.1);
+    }
+
+.delete-icon {
+    background: none;
+    border: none;
+    /* Accent color for deletion/danger */
+    color: #cc4444;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0 10px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    line-height: 1;
+}
+
+.chat-item:hover .delete-icon {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 100%;
+}
+
+.chat-history {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap for dramatic spacing */
+}
+
+    /* Custom Scrollbar for dramatic flair */
+    .chat-history::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .chat-history::-webkit-scrollbar-track {
+        background: #121212;
+    }
+
+    .chat-history::-webkit-scrollbar-thumb {
+        background-color: #4d0000; /* Blood red thumb */
+        border-radius: 10px;
+    }
+
+        .chat-history::-webkit-scrollbar-thumb:hover {
+            background-color: #8b0000;
+        }
+
+.message {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 10px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* User message - the most dramatic element */
+.user-message {
+    align-self: flex-end;
+    /* Deepest crimson/maroon for self */
+    background-color: #8b0000;
+    color: white;
+    border-bottom-right-radius: 4px;
+    /* Subtle inner glow effect */
+    box-shadow: 0 2px 5px rgba(139, 0, 0, 0.5);
+}
+
+/* AI message - mysterious and shadowy */
+.ai-message {
+    align-self: flex-start;
+    /* Dark slate/purple for the 'other' party */
+    background-color: #281a28;
+    color: #e0e0e0;
+    border-bottom-left-radius: 4px;
+    border-left: 3px solid #4d0000; /* Accent stripe */
+}
+
+.input-area {
+    padding: 20px;
+    /* Looks like a stone mantelpiece */
+    background-color: #1f1f1f;
+    border-top: 2px solid #333;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.6);
+}
+
+    .input-area textarea {
+        flex-grow: 1;
+        padding: 12px;
+        border: 1px solid #444;
+        border-radius: 20px;
+        font-size: 1em;
+        min-height: 48px;
+        resize: none;
+        /* Matches the shadowy aesthetic */
+        background-color: #252525;
+        color: #e0e0e0;
+        font-family: inherit;
+        /* Adding a very subtle glow */
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-area button {
+        padding: 10px 25px;
+        /* Same dramatic button color */
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        font-weight: bold;
+    }
+
+        .input-area button:hover {
+            /* Slightly lighter red on hover */
+            background-color: #a00000;
+            transform: scale(1.02);
+        }
+
+/* Table Overhaul - Making it look like ancient records */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-family: inherit;
+    /* Deeper, gothic borders */
+    border: 1px solid #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+thead th {
+    background-color: #331a1a; /* Darker, more blood-soaked header */
+    color: #c0c0c0;
+    border-bottom: 2px solid #8b0000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #1a1212;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #221a22;
+}
+
+tbody tr:hover {
+    /* Highlighting the 'victims' of the cursor */
+    background-color: #331a1a;
+    transition: background-color 0.2s;
+}
+
+tbody td {
+    border-bottom: 1px solid #333;
+    color: #d0d0d0;
+}
+
+/* Utility styling for markdown code blocks */
+.message pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: auto;
+    padding: 15px;
+    background-color: #1a1212; /* Very dark, contained area */
+    border-left: 3px solid #8b0000; /* Crimson accent */
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.message code {
+    font-family: 'Courier New', monospace;
+    color: #ff9999; /* Light red for code */
+    word-break: break-word;
 }

@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Miroku.Core\Miroku.Core.csproj" />
+  </ItemGroup>
+
 </Project>

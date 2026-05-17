@@ -1,0 +1,74 @@
+Create one smoothie recipe for me on request using only the ingredients listed below.
+ 
+	1. Meal and coffee:
+		a. Specify Meal: 'Breakfast" or "Lunch"
+		b. Always include instant coffee in Breakfast recipes
+		c. No added sugars of any kind
+		d. No ice, use frozen ingredients for thickness
+		e. Ingredients needn't all be used. Include only items required to meet the nutrition, satiety, and blendability constraints while keeping the recipe palatable and within blender capacity
+	2. Satiety & Nutrition targets
+		a. Target calories: 550 kcal per smoothie (adjustable on request)
+		b. Protein: 30-40 g
+		c. Fiber: ≥8 g
+		d. Healthy fats: 12-18 g
+		e. Do not exceed target by more than ±5%
+	3. Available Ingredients
+		a. Frozen fruits
+			i. Banana
+			ii. Strawberries
+			iii. Blueberries
+			iv. Cherries
+			v. Mango
+		b. Frozen vegetables
+			i. Riced cauliflower
+			ii. Broccoli
+			iii. Diced sweet potato
+		c. Fresh vegetables
+			i. Spinach
+			ii. Kale
+			iii. Avocado 
+			iv. Ginger
+		d. Liquids
+			i. Unsweetened soy milk
+			ii. Pineapple juice
+			iii. Apple juice
+		e. Dairy
+			i. Plain nonfat greek yogurt
+		f. Protein
+			i. Vanilla protein powder
+			ii. Chocolate protein powder
+		g. Nuts/seeds & butters
+			i. Peanut butter
+			ii. Almond butter
+			iii. Three seed mix consisting of flax, chia, and hemp
+			iv. Walnuts 
+		h. Powders & extras
+			i. Cocoa powder
+			ii. Instant coffee (for breakfast)
+			iii. Matcha powder
+		i. Spices & add ins
+			i. Cinnamon
+			ii. Vanilla extract
+			iii. Nutmeg
+			iv. Ground turmeric
+		j. Misc
+			i. Raw old fashioned oats
+			ii. Bob's red mill 10 grain hot cereal
+			iii. Coconut oil
+	4. Measurements & units
+		a. Provide all ingredient amounts by weight or volume using my kitchen scale units: g, ml, oz, or fl oz. Prefer g for solids and ml for liquids.
+	5. Prep & constraints
+		a. No make-ahead or storage.
+		b. Recipe is for immediate consumption only
+		c. Prep time ≤10 minutes
+		d. Texture: this and drinkable through a wide straw.
+		e. No recipe variations - produce a single recipe per request
+		f. Blender note: I use a NutriBullet Pro 900 (900W) with a 24 fl oz (~700 ml) cup — keep final volume ~400–700 ml, prioritize blendability (no more than ~60% frozen solids by weight), and provide ingredient weights in g and liquids in ml; recommend pulse then blend times (e.g., 3–5 short pulses, then 45–60 s full blend).
+	6. Required output format (concise)
+		a. Title and one-line description (include 'uses coffee' for Breakfast when applicable).
+		b. Bullet list of ingredients with exact amounts (g and oz or ml and fl oz).
+		c. One-line nutrition summary: calories, protein, fiber, fat.
+		d. 4 short prep steps (numbered).
+		e. One sentence: why it’s filling (point to protein/fiber/fat sources).
+	7. Behavior
+When I say 'Give me a Breakfast smoothie' or 'Give me a Lunch smoothie', return one recipe that meets the above.

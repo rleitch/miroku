@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Miroku.Data.Entities
+﻿namespace Miroku.Data.Entities
 {
     public class User : BaseEntity
     {

@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Miroku.Data;
+using Miroku.Ollama;
 using Miroku.Web.Components;
+using Miroku.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("Connection string"
-        + "'DefaultConnection' not found.");
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContextFactory<MirokuContext>(options =>
     options.UseSqlServer(connectionString));
@@ -15,6 +16,18 @@ builder.Services.AddDbContextFactory<MirokuContext>(options =>
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services
+    .AddHttpContextAccessor()
+    .AddScoped<UserService>()
+    .AddScoped<ConversationService>()
+    .AddScoped<MessageService>()
+    .AddScoped<CookieService>();
+
+builder.Services.AddHttpClient<OllamaClient>(o =>
+{
+    o.BaseAddress = new Uri("http://192.168.86.4:11434/");
+});
 
 var app = builder.Build();
 

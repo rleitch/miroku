@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Miroku.Core;
 
-namespace Miroku.Data.Entities
+namespace Miroku.Data.Entities;
+
+public class Message : BaseEntity
 {
-    public class Message : BaseEntity
-    {
-        public string Content { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 
-        //public MessageRole MessageRole { get; set; }
+    public MessageRole Role { get; set; } = MessageRole.User;
 
-        //private enum MessageRole
-        //{
-        //    User,
-        //    Assistant,
-        //    System
-        //}
-    }
+    public Guid ConversationId { get; set; }
+
+    public Conversation Conversation { get; set; }
 }

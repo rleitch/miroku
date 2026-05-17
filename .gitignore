@@ -430,3 +430,4 @@ FodyWeavers.xsd
 *.local.json
 /src/Miroku.Data/MirokuDesignTimeDbContextFactory.cs
 /src/Miroku.Web/appsettings.Development.json
+/src/Miroku.Ollama/Prompts/Default02.txt

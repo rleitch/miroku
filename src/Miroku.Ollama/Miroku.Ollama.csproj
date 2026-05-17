@@ -7,19 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Prompts\ConversationName.txt" />
-    <None Remove="Prompts\Default02.txt" />
-    <None Remove="Prompts\DefaultPrompt.txt" />
-    <None Remove="Prompts\Nyx.txt" />
-    <None Remove="Prompts\Smoothie.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Prompts\ConversationName.txt" />
-    <EmbeddedResource Include="Prompts\Default02.txt" />
-    <EmbeddedResource Include="Prompts\DefaultPrompt.txt" />
-    <EmbeddedResource Include="Prompts\Nyx.txt" />
-    <EmbeddedResource Include="Prompts\Smoothie.txt" />
+	  <EmbeddedResource Include="Prompts\*.txt" />
   </ItemGroup>
 
   <ItemGroup>

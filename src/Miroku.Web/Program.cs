@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Miroku.Data;
-using Miroku.Ollama;
+using Miroku.Ollama.Extensions;
 using Miroku.Web.Components;
+using Miroku.Web.Configuration;
 using Miroku.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var settings = builder.Configuration.GetSection("Settings").Get<Settings>()
+    ?? throw new InvalidOperationException("Settings section not found in appsettings.json");
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -18,16 +22,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services
+    .AddOllamaClient(settings.OllamaSettings)
     .AddHttpContextAccessor()
     .AddScoped<UserService>()
     .AddScoped<ConversationService>()
     .AddScoped<MessageService>()
     .AddScoped<CookieService>();
-
-builder.Services.AddHttpClient<OllamaClient>(o =>
-{
-    o.BaseAddress = new Uri("http://192.168.86.4:11434/");
-});
 
 var app = builder.Build();
 

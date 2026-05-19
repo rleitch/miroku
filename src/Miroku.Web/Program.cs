@@ -14,8 +14,12 @@ var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
         ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContextFactory<MirokuContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContextFactory<MirokuContext>(options => {
+    options.UseSqlServer(
+        connectionString,
+        sqlOptions => sqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null)
+    );
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

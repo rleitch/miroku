@@ -26,7 +26,6 @@ builder.Services
     .AddHttpContextAccessor()
     .AddScoped<UserService>()
     .AddScoped<ConversationService>()
-    .AddScoped<MessageService>()
     .AddScoped<CookieService>();
 
 var app = builder.Build();

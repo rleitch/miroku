@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o .
+        run: dotnet publish -c Release -o . 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: 'miroku'
           slot-name: 'Production'
-          package: .
+          package: . 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_715BE6DB81994FE59DD2DD0F4F91C8A0 }}

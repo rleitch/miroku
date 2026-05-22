@@ -110,12 +110,7 @@
 
     private void OnUserLoaded(UserViewModel user)
     {
-        var cookieValue = CookieService.GetCookie(_userIdKey);
-        if (!Guid.TryParse(cookieValue, out var userId))
-        {
-            CookieService.SetCookie(_userIdKey, user.Id.ToString());
-        }
-
+        CookieService.SetCookie(_userIdKey, user.Id.ToString());
         User = user;
         UserId = user.Id;
         StateHasChanged();

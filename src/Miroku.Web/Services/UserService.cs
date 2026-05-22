@@ -11,17 +11,12 @@ public class UserService(IDbContextFactory<MirokuContext> DbFactory)
 
     public UserViewModel? User { get; set; }
 
-    public async Task LoadUserAsync(Guid? userId)
+    public async Task LoadUserAsync(Guid userId)
     {
-        if (userId.HasValue && User?.Id == userId)
-        {
-            return;
-        }
-
         await GetUser(userId);
         if (User is null)
         {
-            await CreateUser();
+            await CreateUser(userId);
         }
     }
 
@@ -35,28 +30,29 @@ public class UserService(IDbContextFactory<MirokuContext> DbFactory)
         using var mirokuContext = await DbFactory.CreateDbContextAsync();
         var user = await mirokuContext.Users
             .Include(u => u.Conversations)
-            .Where(u => u.Id == userId.Value)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(u => u.Id == userId.Value);
 
-        if (user != null)
+        if(user == null)
         {
-            User = new UserViewModel(user);
-            var latestConversation = await mirokuContext.Conversations
-                .Include(c => c.Messages)
-                .OrderByDescending(c => c.Messages.Max(m => m.DateCreated))
-                .FirstOrDefaultAsync(c => c.UserId == user.Id);
-            if (latestConversation != null)
-            {
-                User.ActiveConversation = new ConversationViewModel(latestConversation);
-            }
-            UserLoaded?.Invoke(User);
+            return;
         }
+
+        User = new UserViewModel(user);
+        var latestConversation = await mirokuContext.Conversations
+            .Include(c => c.Messages)
+            .OrderByDescending(c => c.Messages.Max(m => m.DateCreated))
+            .FirstOrDefaultAsync(c => c.UserId == user.Id);
+        if (latestConversation != null)
+        {
+            User.ActiveConversation = new ConversationViewModel(latestConversation);
+        }
+        UserLoaded?.Invoke(User);
     }
 
-    private async Task CreateUser()
+    private async Task CreateUser(Guid userId)
     {
         using var mirokuContext = await DbFactory.CreateDbContextAsync();
-        var user = new User();
+        var user = new User { Id = userId };
         await mirokuContext.Users.AddAsync(user);
         await mirokuContext.SaveChangesAsync();
         User = new UserViewModel(user);

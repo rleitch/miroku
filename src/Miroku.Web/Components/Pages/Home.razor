@@ -72,6 +72,10 @@
             {
                 UserId = userId;
             }
+            else
+            {
+                UserId = Guid.NewGuid();
+            }
         }
 
         UserService.UserLoaded += OnUserLoaded;
@@ -79,7 +83,7 @@
         ConversationService.ConversationLoaded += OnLoadedConversation;
         ConversationService.ConversationDeleted += ConversationDeleted;
 
-        await UserService.LoadUserAsync(UserId);
+        await UserService.LoadUserAsync(UserId.Value);
     }
 
     private async Task SendMessageAsync()

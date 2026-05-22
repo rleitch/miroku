@@ -6,6 +6,7 @@
 @inject NavigationManager NavManager
 @inject OllamaClient OllamaClient
 @inject CookieService CookieService
+@inject IJSRuntime JS
 @implements IDisposable
 
 
@@ -65,10 +66,23 @@
 
     protected override async Task OnInitializedAsync()
     {
+        UserService.UserLoaded += OnUserLoaded;
+        ConversationService.MessageSaved += OnConversationStateUpdated;
+        ConversationService.ConversationLoaded += OnLoadedConversation;
+        ConversationService.ConversationDeleted += ConversationDeleted;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
         if (UserId is null)
         {
-            var cookieValue = CookieService.GetCookie(_userIdKey);
-            if (Guid.TryParse(cookieValue, out var userId))
+            var userIdValue = await JS.InvokeAsync<string>("storageHelper.get", _userIdKey);
+            if (Guid.TryParse(userIdValue, out var userId))
             {
                 UserId = userId;
             }
@@ -76,14 +90,8 @@
             {
                 UserId = Guid.NewGuid();
             }
+            await UserService.LoadUserAsync(UserId.Value);
         }
-
-        UserService.UserLoaded += OnUserLoaded;
-        ConversationService.MessageSaved += OnConversationStateUpdated;
-        ConversationService.ConversationLoaded += OnLoadedConversation;
-        ConversationService.ConversationDeleted += ConversationDeleted;
-
-        await UserService.LoadUserAsync(UserId.Value);
     }
 
     private async Task SendMessageAsync()
@@ -108,9 +116,9 @@
         await ConversationService.SaveAsync(User.Id, User.ActiveConversation.Id, currentResponse);
     }
 
-    private void OnUserLoaded(UserViewModel user)
+    private async Task OnUserLoaded(UserViewModel user)
     {
-        CookieService.SetCookie(_userIdKey, user.Id.ToString());
+        await JS.InvokeVoidAsync("storageHelper.set", _userIdKey, user.Id);
         User = user;
         UserId = user.Id;
         StateHasChanged();

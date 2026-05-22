@@ -40,10 +40,10 @@ else
         ConversationService.ConversationCreated += ConversationCreated;
     }
 
-    private void OnUserStateChanged(UserViewModel user)
+    private async Task OnUserStateChanged(UserViewModel user)
     {
         User = user;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()

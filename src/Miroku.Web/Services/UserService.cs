@@ -7,7 +7,7 @@ namespace Miroku.Web.Services;
 
 public class UserService(IDbContextFactory<MirokuContext> DbFactory)
 {
-    public event Action<UserViewModel>? UserLoaded;
+    public event Func<UserViewModel, Task>? UserLoaded;
 
     public UserViewModel? User { get; set; }
 

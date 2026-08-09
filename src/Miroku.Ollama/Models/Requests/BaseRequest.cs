@@ -5,7 +5,7 @@ namespace Miroku.Ollama.Models.Requests;
 public abstract class BaseRequest
 {
     [JsonPropertyName("model")]
-    public string Model { get; set; } = "gemma4:e2b";
+    public string Model { get; set; } = "gemma4:12b-it-q4_K_M";
 
     [JsonPropertyName("stream")]
     public bool Stream { get; set; } = true;
@@ -31,7 +31,7 @@ public abstract class BaseRequest
         public int TopK { get; set; } = 64;
 
         [JsonPropertyName("num_ctx")]
-        public int MaxConversationSize { get; set; } = 32768;
+        public int MaxConversationSize { get; set; } = 8192;
 
         [JsonPropertyName("num_predict")]
         public int MaxResponseSize { get; set; } = 4096;

@@ -18,7 +18,7 @@ public class ConversationService(IDbContextFactory<MirokuContext> DbFactory, Oll
     public event Action<ConversationViewModel>? ConversationCreated;
     public readonly OllamaClient _ollamaClient = ollamaClient;
     private readonly string _conversationNamePrompt = PromptHelper.GetPrompt("ConversationName");
-    private string _defaultPrompt = PromptHelper.GetPrompt("DefaultPrompt");
+    private string _defaultPrompt = PromptHelper.GetPrompt("0001");
 
     public async Task SaveAsync(Guid userId, Guid conversationId, MessageViewModel messageView)
     {

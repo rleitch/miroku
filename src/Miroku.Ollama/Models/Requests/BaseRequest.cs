@@ -5,7 +5,7 @@ namespace Miroku.Ollama.Models.Requests;
 public abstract class BaseRequest
 {
     [JsonPropertyName("model")]
-    public string Model { get; set; } = "gemma4:e2b-it-bf16";
+    public string Model { get; set; } = "gemma4:e4b-it-q4_K_M";
 
     [JsonPropertyName("stream")]
     public bool Stream { get; set; } = true;

@@ -63,7 +63,6 @@ public class ConversationService(IDbContextFactory<MirokuContext> DbFactory, Oll
             Stream = true
         };
 
-        _defaultPrompt = _defaultPrompt.Replace("<CURRENT_TIME>", DateTimeOffset.UtcNow.ToString());
         request.Messages.Add(new ChatRequestMessage("system", _defaultPrompt));
         var chatRequestMessages = conversationViewModel?.Messages?.Where(m => !string.IsNullOrWhiteSpace(m.Content)).Select(MapToChatRequestMessage)?.ToArray() ?? [];
         if (chatRequestMessages?.Length > 0)

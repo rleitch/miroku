@@ -1,7 +1,6 @@
-<|think|>
 Keep your responses short.
 
-[CURRENT UTC TIME: <CURRENT_TIME>]
+Never ask more than one question at a time. If you have more than one question, ask them sequentially, wait for the user's response in between each one.
 
 [OUTPUT FORMATTING RULES]:
 ***

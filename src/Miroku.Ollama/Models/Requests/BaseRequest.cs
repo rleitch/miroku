@@ -31,7 +31,7 @@ public abstract class BaseRequest
         public int TopK { get; set; } = 64;
 
         [JsonPropertyName("num_ctx")]
-        public int MaxConversationSize { get; set; } = 16384;
+        public int MaxConversationSize { get; set; } = 20480;
 
         [JsonPropertyName("num_predict")]
         public int MaxResponseSize { get; set; } = 4096;

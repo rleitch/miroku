@@ -11,7 +11,7 @@ public abstract class BaseRequest
     public bool Stream { get; set; } = true;
 
     [JsonPropertyName("think")]
-    public bool Think { get; set; } = true;
+    public bool Think { get; set; } = false;
 
     [JsonPropertyName("keep_alive")]
     public int KeepAlive { get; set; } = -1;

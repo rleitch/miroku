@@ -5,13 +5,13 @@ namespace Miroku.Ollama.Models.Requests;
 public abstract class BaseRequest
 {
     [JsonPropertyName("model")]
-    public string Model { get; set; } = "qwen2.5-coder:14b-instruct-q4_K_M";
+    public string Model { get; set; } = "gemma4:12b-it-qat";
 
     [JsonPropertyName("stream")]
     public bool Stream { get; set; } = true;
 
     [JsonPropertyName("think")]
-    public bool Think { get; set; } = false;
+    public bool Think { get; set; } = true;
 
     [JsonPropertyName("keep_alive")]
     public int KeepAlive { get; set; } = -1;
@@ -22,18 +22,18 @@ public abstract class BaseRequest
     public sealed class OllamaOptions
     {
         [JsonPropertyName("temperature")]
-        public float Temperature { get; set; } = 0.2F;
+        public float Temperature { get; set; } = 1F;
 
         [JsonPropertyName("top_p")]
-        public float TopP { get; set; } = 0.9F;
+        public float TopP { get; set; } = 0.95F;
 
         [JsonPropertyName("top_k")]
-        public int TopK { get; set; } = 40;
+        public int TopK { get; set; } = 64;
 
         [JsonPropertyName("num_ctx")]
-        public int MaxConversationSize { get; set; } = 16384;
+        public int MaxConversationSize { get; set; } = 32768;
 
         [JsonPropertyName("num_predict")]
-        public int MaxResponseSize { get; set; } = 4096;
+        public int MaxResponseSize { get; set; } = 8192;
     }
 }

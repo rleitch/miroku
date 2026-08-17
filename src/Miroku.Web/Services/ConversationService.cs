@@ -64,7 +64,11 @@ public class ConversationService(IDbContextFactory<MirokuContext> DbFactory, Oll
         };
 
         request.Messages.Add(new ChatRequestMessage("system", _defaultPrompt));
-        var chatRequestMessages = conversationViewModel?.Messages?.Where(m => !string.IsNullOrWhiteSpace(m.Content)).Select(MapToChatRequestMessage)?.ToArray() ?? [];
+        var chatRequestMessages = conversationViewModel?.Messages?
+            .Where(m => !string.IsNullOrWhiteSpace(m.Content))
+            .TakeLast(150)
+            .Select(MapToChatRequestMessage)
+            ?.ToArray() ?? [];
         if (chatRequestMessages?.Length > 0)
         {
             request.Messages.AddRange(chatRequestMessages);
